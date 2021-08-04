@@ -43,10 +43,10 @@ public class User implements Serializable{
 	@Column(length = 100, nullable = false)
 	private String password;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "owner")
 	private List<Request> requests = new ArrayList<Request>();
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "owner")
 	private List<RequestStage> stages = new ArrayList<RequestStage>();
 	
 	@Column(length=20,nullable=false)
