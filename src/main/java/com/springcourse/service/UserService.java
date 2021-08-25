@@ -65,6 +65,9 @@ public class UserService {
 		
 	}
 	
+	public int updateRole(User user) {
+		return userRepository.updateRole(user.getId(), user.getRole());
+	}
 	
 	
 	
