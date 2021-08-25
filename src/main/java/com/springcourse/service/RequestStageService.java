@@ -5,10 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.springcourse.domain.Request;
 import com.springcourse.domain.RequestStage;
 import com.springcourse.domain.enums.RequestState;
+import com.springcourse.exception.NotFoundException;
+import com.springcourse.model.PageModel;
+import com.springcourse.model.PageRequestModel;
 import com.springcourse.repository.RequestRepository;
 import com.springcourse.repository.RequestStageRepository;
 
@@ -29,7 +36,7 @@ public class RequestStageService {
 	
 	public RequestStage getById(Long id) {
 		Optional<RequestStage> result = requestStageRepository.findById(id);
-		return result.get();
+		return result.orElseThrow(() -> new NotFoundException("Estagio de pedido não encontrado"));
 	}
 	
 	public List<RequestStage> listAllByRequestId(Long id){
@@ -37,6 +44,16 @@ public class RequestStageService {
 				.findAllByRequestId(id);
 				
 		return requestStages;
+	}
+	
+	public PageModel<RequestStage> listAllByRequestIdOnLazyMode(Long requestId,
+			PageRequestModel pr){
+		Pageable pageable = PageRequest.of(pr.getPage(), pr.getSize());
+		Page<RequestStage> page = requestStageRepository.findAllByRequestId(requestId, pageable);
+		PageModel<RequestStage> pm = new PageModel<>((int)page.getTotalElements(),
+				page.getSize(), page.getTotalPages(),
+				page.getContent());
+		return pm;
 	}
 	
 	
