@@ -55,7 +55,7 @@ public class User implements Serializable{
 	@OneToMany(mappedBy = "owner")
 	private List<RequestStage> stages = new ArrayList<RequestStage>();
 	
-	@Column(length=20,nullable=false)
+	@Column(length=20,nullable=false, updatable=false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	

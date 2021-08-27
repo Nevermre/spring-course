@@ -38,13 +38,17 @@ public class Request implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(length = 75, nullable=false)
 	private String subject;
+	
 	@Column(columnDefinition = "text")
 	private String description;
+	
 	@Column(name="creation_date",nullable=false,updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
+	
 	@Column(length=12,nullable=false)
 	@Enumerated(EnumType.STRING)
 	private RequestState state;

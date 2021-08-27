@@ -2,6 +2,8 @@ package com.springcourse.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springcourse.domain.Request;
 import com.springcourse.domain.RequestStage;
 import com.springcourse.domain.User;
+import com.springcourse.dto.RequestSavedto;
+import com.springcourse.dto.RequestUpdateDto;
 import com.springcourse.model.PageModel;
 import com.springcourse.model.PageRequestModel;
 import com.springcourse.service.RequestService;
@@ -29,16 +33,18 @@ public class RequestResource {
 	@Autowired private RequestService requestService;
 	@Autowired private RequestStageService requestStageService;
 	@PostMapping 
-	public ResponseEntity<Request> save(@RequestBody Request request){
-		Request createdRequest = requestService.save(request);
-		return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
+	public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestdto){
+//		Request createdRequest = requestService.save(request);
+		Request request = requestdto.transformToRequest();
+		return ResponseEntity.status(HttpStatus.CREATED).body(request);
 		
 	}
 	
 	@PutMapping("/{id}")
 	
 	public ResponseEntity<Request> update(@PathVariable(name="id") Long id,
-			@RequestBody Request request){
+			@RequestBody @Valid RequestUpdateDto requestdto){
+		Request request = requestdto.transformToRequest();
 		request.setId(id);
 		Request updatedRequest = requestService.update(request);
 		return ResponseEntity.ok(updatedRequest);

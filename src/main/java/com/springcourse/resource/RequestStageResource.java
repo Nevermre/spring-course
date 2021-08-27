@@ -2,6 +2,8 @@ package com.springcourse.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springcourse.domain.Request;
 import com.springcourse.domain.RequestStage;
+import com.springcourse.dto.RequestStageSavedto;
 import com.springcourse.service.RequestStageService;
 
 @RestController
@@ -24,13 +27,16 @@ public class RequestStageResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<RequestStage> save(@RequestBody RequestStage requestStage){
+	public ResponseEntity<RequestStage> save(@RequestBody
+			@Valid RequestStageSavedto requestStagedto){
+		RequestStage requestStage = requestStagedto.transformToRequestStage();
 		RequestStage createdRequestStage = requestStageService.save(requestStage);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdRequestStage);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<RequestStage> getById(@PathVariable(name = "id") Long id){
+	public ResponseEntity<RequestStage> getById(@PathVariable(name = "id")
+	Long id){
 		RequestStage stage = requestStageService.getById(id);
 		return ResponseEntity.ok(stage);
 	}

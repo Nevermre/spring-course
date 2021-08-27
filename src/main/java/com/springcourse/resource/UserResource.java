@@ -2,6 +2,8 @@ package com.springcourse.resource;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springcourse.domain.Request;
 import com.springcourse.domain.User;
 import com.springcourse.dto.UserLogindto;
+import com.springcourse.dto.UserSavedto;
 import com.springcourse.dto.UserUpdateRoledto;
+import com.springcourse.dto.UserUpdatedto;
 import com.springcourse.model.PageModel;
 import com.springcourse.model.PageRequestModel;
 import com.springcourse.repository.UserRepository;
@@ -33,8 +37,10 @@ public class UserResource {
 	@Autowired private RequestService requestService;
 
 	@PostMapping
-	public ResponseEntity<User> save(@RequestBody User user){
-		User createdUser = userService.save(user);
+	public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userdto){
+		User userToSave = userdto.transformToUser();
+		
+		User createdUser = userService.save(userToSave);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 		
@@ -44,7 +50,9 @@ public class UserResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> update(@PathVariable(name = "id") Long id, @RequestBody User user){
+	public ResponseEntity<User> update(@PathVariable(name = "id") Long id, @RequestBody @Valid UserUpdatedto userdto){
+		
+		User user = userdto.transformToUser();
 		
 		user.setId(id);
 		User updatedUser = userService.update(user);
@@ -55,7 +63,7 @@ public class UserResource {
 	@PatchMapping("/role/{id}")
 	public ResponseEntity<?> updateRole(
 			@PathVariable (name="id") Long id,
-			@RequestBody UserUpdateRoledto userdto){
+			@RequestBody @Valid UserUpdateRoledto userdto){
 		User user = new User();
 		user.setId(id);
 		user.setRole(userdto.getRole());
@@ -85,7 +93,7 @@ public class UserResource {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<User> login(@RequestBody UserLogindto user){
+	public ResponseEntity<User> login(@RequestBody @Valid UserLogindto user){
 		User loggedUser = userService.login(user.getEmail(), user.getPassword());
 		return ResponseEntity.ok(loggedUser);
 	}
