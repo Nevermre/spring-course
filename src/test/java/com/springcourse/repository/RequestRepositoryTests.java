@@ -25,7 +25,7 @@ public class RequestRepositoryTests {
 		User owner = new User();
 		owner.setId(1L);
 		Request request = new Request(null,"Novo Notebook","manda um novo note",
-				new Date(),RequestState.OPEN,owner,null);
+				new Date(),RequestState.OPEN,owner,null,null);
 		Request createdRequest = requestRepository.save(request);
 		assertThat(createdRequest.getId()).isEqualTo(1L);
 	}
@@ -35,7 +35,7 @@ public class RequestRepositoryTests {
 		User owner = new User();
 		owner.setId(1L);
 		Request request = new Request(1L,"Novo Notebook2","manda um novo note2",
-				null,RequestState.OPEN,owner,null);
+				null,RequestState.OPEN,owner,null,null);
 		Request updatedRequest = requestRepository.save(request);
 		assertThat(updatedRequest.getDescription()).isEqualTo("manda um novo note2");
 		

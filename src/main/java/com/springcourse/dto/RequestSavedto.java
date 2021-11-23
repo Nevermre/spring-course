@@ -34,7 +34,7 @@ public class RequestSavedto {
 	public Request transformToRequest() {
 		Request request = new Request(null,
 				this.subject, this.description,null,null,
-				this.owner, this.stages);
+				this.owner, this.stages,null);
 		return request;
 	}
 	

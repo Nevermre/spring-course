@@ -35,7 +35,7 @@ public class RequestUpdateDto {
 	public Request transformToRequest() {
 		Request request = new Request(null,
 				this.subject, this.description,null,this.state,
-				this.owner, this.stages);
+				this.owner, this.stages,null);
 		return request;
 	}
 	

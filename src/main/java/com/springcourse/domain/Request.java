@@ -57,8 +57,13 @@ public class Request implements Serializable {
 	@JoinColumn(name="owner_id",nullable=false)
 	private User owner;
 	
+	
 	@Getter(onMethod = @__({@JsonIgnore}))
 	@OneToMany(mappedBy = "request")
 	private List<RequestStage> stages = new ArrayList<RequestStage>();
+	
+	@Getter(onMethod = @__({@JsonIgnore}))
+	@OneToMany(mappedBy = "request")
+	private List<RequestFile> files = new ArrayList<RequestFile>();
 	
 }
